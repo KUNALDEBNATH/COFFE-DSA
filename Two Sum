@@ -1,1 +1,80 @@
-Two sum: I
+Two sum: It can be solved in Multiple ways...
+1.The brute force one in which we will simply iterate through the entire array to find the pair that makes sum which is equals to the target
+TC:O(n)
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        vector <int>v;
+        for (int i=0;i<nums.size();i++){
+            for (int j=i+1;j<nums.size();j++){
+                if((nums[i]+nums[j])==target){
+                    v.push_back(i);
+                    v.push_back(j);
+                }
+            }
+        }
+        return v;
+    }
+};
+2.Two-Pass Hash Table
+TC:O(n^2)
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        unordered_map<int,int>hashTable;
+        for(int i=0;i<nums.size();i++){  # First Pass
+            hashTable[nums[i]]=i;
+        }
+        for(int i=0;i<nums.size();i++){  # Second Pass
+            int complement=target-nums[i];
+            if(hashTable.find(complement)!=hashTable.end()&&hashTable[complement] != i){
+                return{i,hashTable[complement]};
+            }
+        }
+        return{};
+    }
+};
+3.One-Pass Hash Table
+TC:O(n)
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        unordered_map<int,int> hashTable;
+        for(int i=0;i<nums.size();i++){
+            int complement=target-nums[i];
+
+            if(hashTable.find(complement)!=hashTable.end()){
+                return{hashTable[complement],i};
+            }
+            hashTable[nums[i]]=i;
+        }
+        return{};
+    }
+};
+4.Two-Pointer approach 
+TC:O(log n)
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        vector<pair<int,int>> v;
+        for (int i = 0; i < nums.size(); i++) {
+            v.push_back({nums[i], i});
+        }
+        sort(v.begin(),v.end());
+        int left=0,right=v.size()-1;
+        
+        while(left<right){
+              int sum=v[left].first+v[right].first;
+              if(sum==target){
+                return {v[left].second, v[right].second};
+              }
+              else if(sum<target){
+                left++;
+              }
+              else{
+                right--;
+              }
+        }
+        return{};
+    }
+};
